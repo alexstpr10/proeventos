@@ -107,5 +107,8 @@
       }
     }
   },
-  "defaultProject": "ProEventos-App"
+  "defaultProject": "ProEventos-App",
+  "cli": {
+    "analytics": false
+  }
 }
