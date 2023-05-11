@@ -22,7 +22,8 @@ namespace ProEventos.Repository.Repositories
         {
             IQueryable<Evento> query = _context.Eventos
                 .Include(e => e.Lotes)
-                .Include(e => e.RedesSociais);
+                .Include(e => e.RedesSociais)
+                .ThenInclude(pe => pe.Palestrante);
 
             if(includePalestrantes)
             {
