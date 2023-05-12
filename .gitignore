@@ -529,4 +529,4 @@ Thumbs.db
 *.db-wal
 
 #Excluindo caches angular
-/.angular/cache/*
+Front/ProEventos-App/.angular/cache/*
