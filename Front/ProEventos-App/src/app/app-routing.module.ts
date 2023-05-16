@@ -5,9 +5,19 @@ import { PalestrantesComponent } from './componentes/palestrantes/palestrantes.c
 import { ContatosComponent } from './componentes/contatos/contatos.component';
 import { PerfilComponent } from './componentes/perfil/perfil.component';
 import { DashboardComponent } from './componentes/dashboard/dashboard.component';
+import { EventoDetalheComponent } from './componentes/eventos/evento-detalhe/evento-detalhe.component';
+import { EventoListaComponent } from './componentes/eventos/evento-lista/evento-lista.component';
 
 const routes: Routes = [
-  { path: 'eventos', component: EventosComponent},
+  { path: 'eventos', redirectTo: 'eventos/lista'},
+  {
+    path: 'eventos', component: EventosComponent,
+    children: [
+      {path: 'detalhe/:id', component: EventoDetalheComponent},
+      {path: 'detalhe', component: EventoDetalheComponent},
+      {path: 'lista', component: EventoListaComponent}
+    ]
+  },
   { path: 'palestrantes', component: PalestrantesComponent},
   { path: 'contatos', component: ContatosComponent},
   { path: 'perfil', component: PerfilComponent},
