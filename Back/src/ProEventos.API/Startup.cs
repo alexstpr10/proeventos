@@ -17,6 +17,7 @@ using ProEventos.Application.Services;
 using ProEventos.Repository.Context;
 using ProEventos.Repository.Interfaces;
 using ProEventos.Repository.Repositories;
+using AutoMapper;
 
 namespace ProEventos.API
 {
@@ -38,6 +39,9 @@ namespace ProEventos.API
                     .AddNewtonsoftJson( x => x.SerializerSettings.ReferenceLoopHandling =
                         Newtonsoft.Json.ReferenceLoopHandling.Ignore                        
                     );
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
             services.AddScoped<IPalestranteRepository, PalestranteRepository>();            
             services.AddScoped<IEventoRepository, EventoRepository>();
             services.AddScoped<IGeralRepository, GeralRepository>();

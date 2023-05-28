@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using ProEventos.Application.Dtos;
 using ProEventos.Application.Interfaces;
 using ProEventos.Domain.Models;
 using ProEventos.Repository.Context;
@@ -28,7 +29,7 @@ namespace ProEventos.API.Controllers
             try
             {
                 var eventos = await _eventoService.GetAllEventosAsync(true);
-                if (eventos == null) return NotFound("Nenhum evento encontrado.");
+                if (eventos == null) return NoContent();
 
                 return Ok(eventos);
             }
@@ -44,7 +45,7 @@ namespace ProEventos.API.Controllers
             try
             {
                 var evento = await _eventoService.GetEventoByIdAsync(id, true);
-                if (evento == null) return NotFound("Nenhum evento encontrado.");
+                if (evento == null) return NoContent();
 
                 return Ok(evento);
             }
@@ -61,7 +62,7 @@ namespace ProEventos.API.Controllers
             try
             {
                 var eventos = await _eventoService.GetAllEventosByTemaAsync(tema, true);
-                if (eventos == null) return NotFound("Nenhum evento encontrado.");
+                if (eventos == null) return NoContent();
 
                 return Ok(eventos);
             }
@@ -73,12 +74,12 @@ namespace ProEventos.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(Evento evento)
+        public async Task<IActionResult> Post(EventoDto evento)
         {
             try
             {
                 var eventos = await _eventoService.AddEvento(evento);
-                if (eventos == null) return BadRequest("Erro ao tentar cadastrar o evento.");
+                if (eventos == null) return NoContent();
 
                 return Ok(eventos);
             }
@@ -90,12 +91,12 @@ namespace ProEventos.API.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Put(Evento evento)
+        public async Task<IActionResult> Put(int eventoId, EventoDto evento)
         {
             try
             {
-                var eventos = await _eventoService.UpdateEvento(evento);
-                if (eventos == null) return BadRequest("Erro ao tentar cadastrar o evento.");
+                var eventos = await _eventoService.UpdateEvento(eventoId, evento);
+                if (eventos == null) return NoContent();
 
                 return Ok(eventos);
             }
