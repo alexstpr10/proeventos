@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { Evento } from '@app/models/Evento';
+import { EventoService } from '@app/services/evento.service';
+import { BsLocaleService } from 'ngx-bootstrap/datepicker';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-evento-detalhe',
@@ -7,6 +13,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./evento-detalhe.component.scss']
 })
 export class EventoDetalheComponent implements OnInit {
+  evento = {} as Evento;
 
   get f() :any{
     return this.form.controls;
@@ -14,8 +21,38 @@ export class EventoDetalheComponent implements OnInit {
 
   form!: FormGroup;
 
-  constructor(private fb: FormBuilder){}
+  constructor(private fb: FormBuilder,
+              private localeService: BsLocaleService,
+              private router: ActivatedRoute,
+              private eventoService: EventoService,
+              private spinner: NgxSpinnerService,
+              private toastr: ToastrService){
+    this.localeService.use('pt-br');
+  }
+
+  public carregarEvento(): void{
+    const eventoIdParam = this.router.snapshot.paramMap.get('id');
+
+    if(eventoIdParam != null){
+      this.spinner.show();
+      this.eventoService.getEventoById(+eventoIdParam).subscribe(
+        (evento: Evento) => {
+          this.evento = {...evento};
+          this.form.patchValue(this.evento);
+        },
+        (error: any) => {
+          this.spinner.hide();
+          this.toastr.error('Erro ao tentar carregar evento.', 'Erro!');
+          console.error(error);
+        },
+        () => this.spinner.hide(),
+      );
+    }
+
+  }
+
   ngOnInit(): void{
+    this.carregarEvento();
     this.validation();
   }
 
@@ -33,5 +70,9 @@ export class EventoDetalheComponent implements OnInit {
 
   public resetForm() : void{
     this.form.reset();
+  }
+
+  public cssValidator(campo: FormControl) : any{
+    return {'is-invalid' : campo.errors && campo.touched};
   }
 }
