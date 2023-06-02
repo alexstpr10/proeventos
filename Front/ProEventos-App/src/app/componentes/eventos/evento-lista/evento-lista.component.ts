@@ -18,6 +18,7 @@ export class EventoListaComponent {
   public eventosFiltrados: Evento[] = [];
   public exibirImg: boolean = true;
   private _filtroLista: string = "";
+  public eventoId =0;
 
   public get filtroLista(): string{
     return this._filtroLista;
@@ -70,13 +71,32 @@ export class EventoListaComponent {
     });
   }
 
-  public openModal(template: TemplateRef<any>){
+  public openModal(event: any, template: TemplateRef<any>, eventoId: number){
+    event.stopPropagation();
+    this.eventoId = eventoId;
     this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
   }
 
   public confirm() : void{
     this.modalRef.hide();
-    this.toastr.success('O evento foi excluido com sucesso.', 'Excluido!');
+    this.spinner.show();
+
+    this.eventoService.deleteEvento(this.eventoId).subscribe(
+      (result) => {
+        if(result.message == 'Deletado'){
+          this.toastr.success(`O evento de código ${this.eventoId} foi excluido com sucesso.`, 'Excluido!');
+          this.spinner.hide();
+          this.getEventos();
+        }
+      },
+      (error: any) => {
+        console.error(error);
+        this.toastr.error(`Erro ao tentar deletar o envento ${this.eventoId} erro: ${error} `, 'Erro');
+        this.spinner.hide();
+      },
+      () => this.spinner.hide(),
+    );
+
   }
 
   public decline() : void{

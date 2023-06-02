@@ -90,12 +90,12 @@ namespace ProEventos.API.Controllers
             }            
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Put(int eventoId, EventoDto evento)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, EventoDto evento)
         {
             try
             {
-                var eventos = await _eventoService.UpdateEvento(eventoId, evento);
+                var eventos = await _eventoService.UpdateEvento(id, evento);
                 if (eventos == null) return NoContent();
 
                 return Ok(eventos);
@@ -113,7 +113,7 @@ namespace ProEventos.API.Controllers
             try
             {
                 if(await _eventoService.DeleteEvento(id))
-                    return Ok("Deletado");
+                    return Ok(new { message = "Deletado" });
                 else 
                     return BadRequest("Erro ao tentar excluir o evento");
             }

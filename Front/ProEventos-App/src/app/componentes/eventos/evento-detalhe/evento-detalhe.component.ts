@@ -75,4 +75,36 @@ export class EventoDetalheComponent implements OnInit {
   public cssValidator(campo: FormControl) : any{
     return {'is-invalid' : campo.errors && campo.touched};
   }
+
+  public salvarAlteracao(): void{
+    this.spinner.show();
+
+    if(this.form.valid){
+
+      if (this.evento.id > 0) {
+        this.evento = {id: this.evento.id, ... this.form.value};
+        console.log(this.evento);
+        this.eventoService.putEvento(this.evento.id, this.evento).subscribe(
+          () => this.toastr.success('Evento atualizado com Sucesso!', 'Sucesso'),
+          (error: any) => {
+            console.error(error);
+            this.spinner.hide();
+            this.toastr.error('Erro ao atualizar o evento', 'Erro');
+          },
+          () => this.spinner.hide()
+        );
+      } else {
+        this.evento = { ... this.form.value};
+        this.eventoService.postEvento(this.evento).subscribe(
+          () => this.toastr.success('Evento salvo com Sucesso!', 'Sucesso'),
+          (error: any) => {
+            console.error(error);
+            this.spinner.hide();
+            this.toastr.error('Erro ao salvar o evento', 'Erro');
+          },
+          () => this.spinner.hide()
+        );
+      }
+    }
+  }
 }

@@ -7,7 +7,9 @@ import { Evento } from '../models/Evento';
 // { providedIn: 'root' }
 )
 export class EventoService {
-  baseURL = 'https://localhost:5001/Eventos';
+  baseURL = 'https://localhost:44304/Eventos';
+  //https://localhost:44304/
+  //https://localhost:5001
 
   constructor(private http: HttpClient) { }
 
@@ -25,4 +27,20 @@ export class EventoService {
   {
     return this.http.get<Evento>(`${this.baseURL}/${id}`);
   }
+
+  public postEvento(evento: Evento) : Observable<Evento>
+  {
+    return this.http.post<Evento>(this.baseURL, evento);
+  }
+
+  public putEvento(id: number, evento: Evento) : Observable<Evento>
+  {
+    return this.http.put<Evento>(`${this.baseURL}/${id}`, evento);
+  }
+
+  public deleteEvento(id: number) : Observable<any>
+  {
+    return this.http.delete(`${this.baseURL}/${id}`);
+  }
+
 }
