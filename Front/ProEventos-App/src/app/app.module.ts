@@ -22,6 +22,7 @@ import { ptBrLocale } from 'ngx-bootstrap/locale';
 
 import { DateTimeFormatPipe } from './helpers/DateTimeFormat.pipe';
 import { EventoService } from './services/evento.service';
+import { LoteService } from './services/lote.service';
 import { TituloComponent } from './shared/titulo/titulo.component';
 import { ContatosComponent } from './componentes/contatos/contatos.component';
 import { DashboardComponent } from './componentes/dashboard/dashboard.component';
@@ -72,7 +73,8 @@ defineLocale('pt-br', ptBrLocale);
     NgxSpinnerModule
   ],
   providers: [
-    EventoService
+    EventoService,
+    LoteService
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

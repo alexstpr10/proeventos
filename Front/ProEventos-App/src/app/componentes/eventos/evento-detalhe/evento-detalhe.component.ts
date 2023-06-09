@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, AbstractControlOptions, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Evento } from '@app/models/Evento';
+import { Lote } from '@app/models/Lote';
 import { EventoService } from '@app/services/evento.service';
 import { BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -17,6 +18,14 @@ export class EventoDetalheComponent implements OnInit {
 
   get f() :any{
     return this.form.controls;
+  }
+
+  get lotes(): FormArray {
+    return this.form.get('lotes') as FormArray;
+  }
+
+  get modoEditar(): boolean{
+    return this.evento.id > 0;
   }
 
   form!: FormGroup;
@@ -65,6 +74,7 @@ export class EventoDetalheComponent implements OnInit {
       imagemURL: ['', Validators.required],
       telefone: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
+      lotes: this.fb.array([])
     });
   }
 
@@ -72,8 +82,23 @@ export class EventoDetalheComponent implements OnInit {
     this.form.reset();
   }
 
-  public cssValidator(campo: FormControl) : any{
-    return {'is-invalid' : campo.errors && campo.touched};
+  public cssValidator(campo: AbstractControl | null) : any{
+    const ctrl = campo as FormControl;
+    return {'is-invalid' : ctrl.errors && ctrl.touched};
+  }
+  adicionarLote(): void {
+    this.lotes.push(this.criarLote({id: 0} as Lote));
+  }
+
+  criarLote(lote: Lote): FormGroup {
+    return this.fb.group({
+      id: [lote.id],
+      nome: [lote.nome, Validators.required],
+      quantidade: [lote.quantidade, Validators.required],
+      preco: [lote.preco, Validators.required],
+      dataInicio: [lote.dataInicio],
+      dataFim: [lote.dataFim],
+    })
   }
 
   public salvarAlteracao(): void{

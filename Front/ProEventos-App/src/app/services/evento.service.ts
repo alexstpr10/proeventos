@@ -3,11 +3,12 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Evento } from '../models/Evento';
 import { take } from 'rxjs/operators';
+import { Constants } from '@app/util/constants';
 @Injectable(
 // { providedIn: 'root' }
 )
 export class EventoService {
-  baseURL = 'https://localhost:5001/Eventos';
+  baseURL = `${Constants.BASE_URL}/Eventos`;
   //https://localhost:44304/
   //https://localhost:5001
 
