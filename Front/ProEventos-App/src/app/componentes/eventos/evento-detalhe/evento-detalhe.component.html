@@ -86,7 +86,7 @@
         <button class="btn btn-outline-secondary mr-auto border" (click)="resetForm()">
           Cancelar Alteração
         </button>
-        <button type="submit" class="btn btn-success f" [disabled]="!form.valid" (click)="salvarAlteracao()">
+        <button type="submit" class="btn btn-success f" [disabled]="!form.valid" (click)="salvarEvento()">
           <!-- <span class="spinner-border spinner-border-sm mr-1"></span> -->
           Salvar Evento
         </button>
@@ -108,10 +108,12 @@
     <p>Clique em Lote para adicionar e preencher novos Lotes</p>
     <div class="form-row p-1">
       <div [formGroup]="form" class="col">
+        <!-- <p>Form value: {{form.controls.lotes.value | json}}</p>
+        <p>Form valid: {{form.controls.lotes.status | json}}</p> -->
         <div formArrayName="lotes" *ngFor="let lote of lotes.controls; let i=index">
           <fieldset [formGroupName]="i" class="form-group">
             <legend class="d-flex justify-content-between capitalize">
-              <button class="p-2 btn btn-sm btn-outline-warning mb-1 d-flex"
+              <button (click)="removerLote(template, i)" class="p-2 btn btn-sm btn-outline-warning mb-1 d-flex"
                 tooltip="Excluir Lote"
                 [adaptivePosition]="false"
                 [delay]="500"
@@ -156,10 +158,17 @@
     <button class="btn btn-outline-secondary mr-auto border">
       Cancelar Alteração
     </button>
-    <button class="btn btn-success">
+    <button (click)="salvarLotes()" class="btn btn-success">
       Salvar Lotes
     </button>
   </div>
 </div>
 </div>
 <br>
+<ng-template #template>
+  <div class="modal-body text-center">
+    <p>Tem certeza que deseja deletar o lote {{ this.loteAtual.nome }}?</p>
+    <button type="button" class="btn btn-default" (click)="confirmDeleteLote()" >Sim</button>
+    <button type="button" class="btn btn-primary" (click)="declineDeleteLote()" >Não</button>
+  </div>
+</ng-template>
