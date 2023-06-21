@@ -100,6 +100,10 @@ export class EventoDetalheComponent implements OnInit {
     this.lotes.push(this.criarLote({id: 0} as Lote));
   }
 
+  public retornaTituloLote(nome: any): string{
+    return nome.value == null || nome.value == '' ? 'Nome do Lote' : nome.value;
+  }
+
   criarLote(lote: Lote): FormGroup {
     return this.fb.group({
       id: [lote.id],
