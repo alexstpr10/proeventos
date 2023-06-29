@@ -19,6 +19,7 @@ export class EventoDetalheComponent implements OnInit {
   modalRef!: BsModalRef;
   evento = {} as Evento;
   loteAtual = {id: 0, nome: '', indice: 0};
+  imagemURL = 'assets/upload.png';
 
   get f() :any{
     return this.form.controls;
