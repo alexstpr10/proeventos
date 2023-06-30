@@ -1,5 +1,6 @@
 import { Component, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from '@environments/environment';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
@@ -105,5 +106,11 @@ export class EventoListaComponent {
 
   public detalheEvento(id: number) : void{
     this.router.navigate([`eventos/detalhe/${id}`]);
+  }
+
+  public mostraImagem(imagemURL: string): string{
+    return (imagemURL != null && imagemURL != '')
+      ? `${environment.apiURL}/resources/images/${imagemURL}`
+      : '/assets/no_photo.png';
   }
 }

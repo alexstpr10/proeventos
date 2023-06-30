@@ -8,7 +8,8 @@
           <div class="form-row">
             <div class="form-group col-md-12">
               <label>Tema</label>
-              <input type="text" class="form-control" [ngClass]="cssValidator(f.tema)" formControlName="tema" placeholder="Insira o Tema">
+              <input type="text" class="form-control" [ngClass]="cssValidator(f.tema)" formControlName="tema" placeholder="Insira o Tema"
+              [(ngModel)]="evento.tema">
               <div *ngIf="f.tema.errors?.required" class="invalid-feedback">
                 Tema é obrigatório
               </div>
@@ -23,7 +24,7 @@
           <div class="form-row">
             <div class="form-group col-md-8">
               <label>Local</label>
-              <input type="text" class="form-control" [ngClass]="cssValidator(f.local)" formControlName="local" placeholder="">
+              <input type="text" class="form-control" [ngClass]="cssValidator(f.local)" formControlName="local" placeholder="" [(ngModel)]="evento.local">
               <div *ngIf="f.local.errors?.required" class="invalid-feedback">
                 Local é obrigatório
               </div>
@@ -31,7 +32,7 @@
             <div class="form-group col-md-4">
               <label>Data e Hora</label>
               <input type="datetime" class="form-control" [ngClass]="cssValidator(f.dataEvento)"
-                formControlName="dataEvento" placeholder=""
+                formControlName="dataEvento" placeholder="" [(ngModel)]="evento.dataEvento"
                 value="{{ evento.dataEvento | DateTimeFormatPipe }}"
                 bsDatepicker
                 [bsConfig]="{ isAnimated:true,
@@ -49,7 +50,7 @@
           <div class="form-row">
             <div class="form-group col-md-2">
               <label>Qtd Pessoas</label>
-              <input type="number" class="form-control" [ngClass]="cssValidator(f.qtdPessoas)" formControlName="qtdPessoas" placeholder="">
+              <input type="number" class="form-control" [ngClass]="cssValidator(f.qtdPessoas)" formControlName="qtdPessoas" placeholder="" [(ngModel)]="evento.qtdPessoas">
               <div *ngIf="f.qtdPessoas.errors?.required" class="invalid-feedback">
                 Qtd de pessoas é obrigatório
               </div>
@@ -57,28 +58,21 @@
                 Qtd máxima de pessoas é 120.000
               </div>
             </div>
-            <div class="form-group col-md-2">
+            <div class="form-group col-md-4">
               <label>Telefone</label>
-              <input type="text" class="form-control" [ngClass]="cssValidator(f.telefone)" formControlName="telefone" placeholder="(000) 90000-0000">
+              <input type="text" class="form-control" [ngClass]="cssValidator(f.telefone)" formControlName="telefone" placeholder="(000) 90000-0000" [(ngModel)]="evento.telefone">
               <div *ngIf="f.telefone.errors?.required" class="invalid-feedback">
                 Telefone é obrigatório
               </div>
             </div>
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-6">
               <label>E-mail</label>
-              <input type="text" class="form-control" [ngClass]="cssValidator(f.email)" formControlName="email" placeholder="e-mail">
+              <input type="text" class="form-control" [ngClass]="cssValidator(f.email)" formControlName="email" placeholder="e-mail" [(ngModel)]="evento.email">
               <div *ngIf="f.email.errors?.email" class="invalid-feedback">
                 Deve ser um endereço de e-mail válido
               </div>
               <div *ngIf="f.email.errors?.required" class="invalid-feedback">
                 Deve ser um endereço de e-mail válido
-              </div>
-            </div>
-            <div class="form-group col-md-4">
-              <label>Imagem</label>
-              <input type="text" class="form-control" [ngClass]="cssValidator(f.imagemURL)" formControlName="imagemURL" placeholder="imagem">
-              <div *ngIf="f.imagemURL.errors?.required" class="invalid-feedback">
-                Imagem é obrigatório
               </div>
             </div>
           </div>
@@ -181,7 +175,7 @@
         <button class="btn btn-outline-secondary mr-auto border">
           Cancelar Alteração
         </button>
-        <button [disabled]="!form.controls.lotes.valid" (click)="salvarLotes()" class="btn btn-success">
+        <button [disabled]="lotesValidos()" (click)="salvarLotes()" class="btn btn-success">
           Salvar Lotes
         </button>
       </div>
@@ -192,7 +186,7 @@
     <div [formGroup]="form" class="card-evento-view shadow-sm">
       <div class="form-row">
         <div class="form-group m-0">
-          <input type="file" #file class="form-control is-invalid" placeholder="" style="display: none">
+          <input type="file" #file (change)="onFileChange($event)" class="form-control is-invalid" placeholder="" style="display: none">
         </div>
       </div>
       <div class="card profile-card-2">

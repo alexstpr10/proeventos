@@ -5,10 +5,13 @@ import { Evento } from '@app/models/Evento';
 import { Lote } from '@app/models/Lote';
 import { EventoService } from '@app/services/evento.service';
 import { LoteService } from '@app/services/lote.service';
+import { environment } from '@environments/environment';
 import { BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-evento-detalhe',
@@ -20,6 +23,7 @@ export class EventoDetalheComponent implements OnInit {
   evento = {} as Evento;
   loteAtual = {id: 0, nome: '', indice: 0};
   imagemURL = 'assets/upload.png';
+  file!: File;
 
   get f() :any{
     return this.form.controls;
@@ -56,6 +60,10 @@ export class EventoDetalheComponent implements OnInit {
         (evento: Evento) => {
           this.evento = {...evento};
           this.form.patchValue(this.evento);
+
+          if(this.evento.imagemURL != null && this.evento.imagemURL != '') {
+            this.imagemURL = environment.apiURL + '/resources/images/' + this.evento.imagemURL;
+          }
           this.evento.lotes.forEach(lote => {
             this.lotes.push(this.criarLote(lote));
           });
@@ -82,7 +90,7 @@ export class EventoDetalheComponent implements OnInit {
       local: ['', [Validators.required]],
       dataEvento: ['', Validators.required],
       qtdPessoas: ['', [Validators.required, Validators.max(120000)]],
-      imagemURL: ['', Validators.required],
+      imagemURL: [''],
       telefone: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       lotes: this.fb.array([])
@@ -165,6 +173,12 @@ export class EventoDetalheComponent implements OnInit {
     }
   }
 
+  public lotesValidos(): Boolean{
+    if (this.lotes.length == 0) return true;
+    return !this.form.controls.lotes.valid;
+  }
+
+
   public removerLote(template: TemplateRef<any>, indice: number): void{
 
     this.loteAtual.id = this.lotes.get(indice + '.id')?.value;
@@ -198,6 +212,31 @@ export class EventoDetalheComponent implements OnInit {
 
   public declineDeleteLote(): void{
     this.modalRef.hide();
+  }
+
+  public onFileChange(ev: any): void{
+    const reader = new FileReader();
+
+    reader.onload = (event: any) => this.imagemURL = event.target.result;
+
+    this.file = ev.target.files[0];
+    reader.readAsDataURL(this.file);
+
+    this.uploadImage();
+  }
+
+  public uploadImage(): void {
+    this.spinner.show();
+    this.eventoService.postUpload(this.evento.id, this.file).subscribe(
+      () => {
+        this.carregarEvento();
+        this.toastr.success('Imagem atualizada com sucesso', 'Sucesso!');
+      },
+      (error: any) => {
+        this.toastr.error('Erro ao fazer upload de imagem', 'Erro!');
+        console.error(error);
+      }
+    ).add(() => this.spinner.hide());
   }
 
 }
