@@ -45,7 +45,7 @@ namespace ProEventos.Repository.Repositories
             }
 
             query = query.OrderBy(e => e.Id)
-                         .Where(x => x.Nome.ToLower().Contains(nome.ToLower()));
+                         .Where(x => x.User.PrimeiroNome.ToLower().Contains(nome.ToLower()));
 
 
             return await query.ToArrayAsync();
