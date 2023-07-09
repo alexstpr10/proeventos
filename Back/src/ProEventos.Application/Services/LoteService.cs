@@ -13,13 +13,11 @@ namespace ProEventos.Application.Services
     public class LoteService : ILoteService
     {
         private readonly ILoteRepository _loteRepository;        
-        private readonly IGeralRepository _geralRepository;
         private readonly IMapper _mapper;
 
-        public LoteService(ILoteRepository loteRepository, IGeralRepository geralRepository, IMapper mapper)
+        public LoteService(ILoteRepository loteRepository, IMapper mapper)
         {
             this._loteRepository = loteRepository;
-            this._geralRepository = geralRepository;
             this._mapper = mapper;
         }
         public async Task<bool> DeleteLote(int eventoId, int loteId)
@@ -27,8 +25,8 @@ namespace ProEventos.Application.Services
             var lote = await _loteRepository.GetLoteByIdsAsync(eventoId, loteId);
             if(lote == null) throw new Exception("Lote não encontrado");
 
-            _geralRepository.Delete<Lote>(lote);            
-            return await _geralRepository.SaveChangesAsync();   
+            _loteRepository.Delete<Lote>(lote);            
+            return await _loteRepository.SaveChangesAsync();   
         }
 
         public async Task<LoteDto> GetLoteByIdsAsync(int eventoId, int loteId)
@@ -59,9 +57,9 @@ namespace ProEventos.Application.Services
 
             lote.EventoId = eventoId;
 
-            _geralRepository.Add<Lote>(lote);
+            _loteRepository.Add<Lote>(lote);
 
-            await _geralRepository.SaveChangesAsync();
+            await _loteRepository.SaveChangesAsync();
         }
 
         public async Task<LoteDto[]> SaveLotes(int eventoId, LoteDto[] models)
@@ -83,9 +81,9 @@ namespace ProEventos.Application.Services
 
                     _mapper.Map(model, lote);
 
-                    _geralRepository.UpDate<Lote>(lote);            
+                    _loteRepository.UpDate<Lote>(lote);            
                     
-                    await _geralRepository.SaveChangesAsync();
+                    await _loteRepository.SaveChangesAsync();
                 }
                 
             }

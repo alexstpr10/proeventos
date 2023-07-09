@@ -6,7 +6,7 @@ using ProEventos.Domain.Models;
 
 namespace ProEventos.Repository.Interfaces
 {
-    public interface IEventoRepository
+    public interface IEventoRepository: IGeralRepository
     {        
         Task<Evento[]> GetAllEventosByTemaAsync(string tema, bool includePalestrantes);
         Task<Evento[]> GetAllEventosAsync(bool includePalestrantes);

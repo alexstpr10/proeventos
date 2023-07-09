@@ -9,11 +9,11 @@ using ProEventos.Repository.Interfaces;
 
 namespace ProEventos.Repository.Repositories
 {
-    public class LoteRepository : ILoteRepository
+    public class LoteRepository : GeralRepository, ILoteRepository
     {
         private readonly ProEventosContext _context;
 
-        public LoteRepository(ProEventosContext context)
+        public LoteRepository(ProEventosContext context): base(context)
         {
             this._context = context;            
         }

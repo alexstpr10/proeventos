@@ -13,11 +13,9 @@ namespace ProEventos.Application.Services
     public class EventoService : IEventoService
     {
         private readonly IEventoRepository _eventoRepository;        
-        private readonly IGeralRepository _geralRepository;
         private readonly IMapper _mapper;
-        public EventoService(IEventoRepository eventoRepository, IGeralRepository geralRepository, IMapper mapper)
+        public EventoService(IEventoRepository eventoRepository, IMapper mapper)
         {
-            this._geralRepository = geralRepository;
             this._eventoRepository = eventoRepository;  
             this._mapper = mapper;          
         }
@@ -25,8 +23,8 @@ namespace ProEventos.Application.Services
         {
             var evento = _mapper.Map<Evento>(model);
 
-            _geralRepository.Add<Evento>(evento);            
-            var retorno = await _geralRepository.SaveChangesAsync();
+            _eventoRepository.Add<Evento>(evento);            
+            var retorno = await _eventoRepository.SaveChangesAsync();
             if(retorno)
             {
                 var eventoRetorno = await _eventoRepository.GetEventoByIdAsync(evento.Id, false);
@@ -41,8 +39,8 @@ namespace ProEventos.Application.Services
             var evento = await _eventoRepository.GetEventoByIdAsync(eventoId, false);
             if(evento == null) throw new Exception("Evento não encontrado");
 
-            _geralRepository.Delete<Evento>(evento);            
-            return await _geralRepository.SaveChangesAsync();            
+            _eventoRepository.Delete<Evento>(evento);            
+            return await _eventoRepository.SaveChangesAsync();            
         }        
         public async Task<EventoDto> UpdateEvento(int idEvento, EventoDto model)
         {
@@ -54,8 +52,8 @@ namespace ProEventos.Application.Services
 
              _mapper.Map(model, evento);
 
-            _geralRepository.UpDate<Evento>(evento);            
-            var reponse = await _geralRepository.SaveChangesAsync();
+            _eventoRepository.UpDate<Evento>(evento);            
+            var reponse = await _eventoRepository.SaveChangesAsync();
             if(reponse)
             {
                 var eventoRetorno = await _eventoRepository.GetEventoByIdAsync(evento.Id, false);
