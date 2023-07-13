@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { EventosComponent } from './componentes/eventos/eventos.component';
+import { HomeComponent } from './componentes/home/home.component';
 import { PalestrantesComponent } from './componentes/palestrantes/palestrantes.component';
 import { ContatosComponent } from './componentes/contatos/contatos.component';
 import { PerfilComponent } from './componentes/user/perfil/perfil.component';
@@ -10,8 +11,31 @@ import { EventoListaComponent } from './componentes/eventos/evento-lista/evento-
 import { UserComponent } from './componentes/user/user.component';
 import { LoginComponent } from './componentes/user/login/login.component';
 import { RegistrationComponent } from './componentes/user/registration/registration.component';
+import { AuthGuard } from './guard/auth.guard';
 
 const routes: Routes = [
+  { path: '', redirectTo: 'home', pathMatch: 'full'},
+  {
+    path: '',
+    runGuardsAndResolvers: 'always',
+    canActivate: [AuthGuard],
+    children: [
+      { path: 'user', redirectTo: 'user/perfil'},
+      { path: 'user/perfil', component: PerfilComponent},
+      { path: 'eventos', redirectTo: 'eventos/lista'},
+      {
+        path: 'eventos', component: EventosComponent,
+        children: [
+          {path: 'detalhe/:id', component: EventoDetalheComponent},
+          {path: 'detalhe', component: EventoDetalheComponent},
+          {path: 'lista', component: EventoListaComponent}
+        ]
+      },
+      { path: 'palestrantes', component: PalestrantesComponent, canActivate: [AuthGuard]},
+      { path: 'contatos', component: ContatosComponent, canActivate: [AuthGuard]},
+      { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]}
+    ]
+  },
   {
     path: 'user', component: UserComponent,
     children: [
@@ -23,21 +47,8 @@ const routes: Routes = [
       }
     ]
   },
-  { path: 'user/perfil', component: PerfilComponent},
-  { path: 'eventos', redirectTo: 'eventos/lista'},
-  {
-    path: 'eventos', component: EventosComponent,
-    children: [
-      {path: 'detalhe/:id', component: EventoDetalheComponent},
-      {path: 'detalhe', component: EventoDetalheComponent},
-      {path: 'lista', component: EventoListaComponent}
-    ]
-  },
-  { path: 'palestrantes', component: PalestrantesComponent},
-  { path: 'contatos', component: ContatosComponent},
-  { path: 'dashboard', component: DashboardComponent},
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full'},
-  { path: '**', redirectTo: 'dashboard', pathMatch: 'full'}
+  { path: 'home', component: HomeComponent},
+  { path: '**', redirectTo: 'home', pathMatch: 'full'}
 ];
 
 @NgModule({

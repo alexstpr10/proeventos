@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +23,7 @@ namespace ProEventos.API.Controllers
         public AccountController(IAccountService accountService, ITokenService tokenService)
         {
             _tokenService = tokenService;
-            _accountService = accountService;            
+            _accountService = accountService;                        
         }
 
         [HttpGet("GetUser")]
@@ -51,7 +52,14 @@ namespace ProEventos.API.Controllers
 
                 var user = await _accountService.CreateAccountAsync(userDto);
                 if(user != null)
-                    return Ok(user);
+                {
+                    return Ok(new
+                    {
+                        userName = user.UserName,
+                        primeiroNome = user.PrimeiroNome,
+                        token = await _tokenService.CreateTokenAsync(user)
+                    });
+                }
                 
                 return BadRequest("Usuário não criado, tente novamente mais tarde!");
 
@@ -78,7 +86,7 @@ namespace ProEventos.API.Controllers
                 {
                     userName = user.UserName,
                     primeiroNome = user.PrimeiroNome,
-                    token = _tokenService.CreateTokenAsync(user)
+                    token = await _tokenService.CreateTokenAsync(user)
                 });
 
             }
