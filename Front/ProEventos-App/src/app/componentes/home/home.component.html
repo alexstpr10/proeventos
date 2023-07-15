@@ -1,3 +1,12 @@
-<p>
-  home works!
-</p>
+<app-titulo [titulo]="'Home'" [iconClass]="'fas fa-home'"></app-titulo>
+<div *ngIf="accountService.getCurrentUser() === null" class="navbar-nav mr-3 d-xs-none d-none d-md-block">
+  <p>Faça  o login para ter acesso ao sistema</p>
+</div>
+<div *ngIf="accountService.getCurrentUser() !== null" class="navbar-nav mr-3 d-xs-none d-none d-md-block">
+  <div *ngIf="accountService.getCurrentUser() as user">
+    <strong>
+      <p>Olá {{ user.primeiroNome }} </p>
+      <p>Bem vindo ao sistema de eventos</p>
+    </strong>
+  </div>
+</div>
