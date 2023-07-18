@@ -13,6 +13,7 @@ using ProEventos.Application.Dtos;
 using ProEventos.Application.Interfaces;
 using ProEventos.Domain.Models;
 using ProEventos.Repository.Context;
+using ProEventos.Repository.Models;
 
 namespace ProEventos.API.Controllers
 {
@@ -31,11 +32,11 @@ namespace ProEventos.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get([FromQuery]PageParams pageParams)
         {
             try
             {
-                var eventos = await _eventoService.GetAllEventosAsync(User.GetUserId(), true);
+                var eventos = await _eventoService.GetAllEventosAsync(User.GetUserId(), pageParams, true);
                 if (eventos == null) return NoContent();
 
                 return Ok(eventos);
@@ -63,22 +64,22 @@ namespace ProEventos.API.Controllers
             }             
         }
 
-        [HttpGet("{tema}/tema")]
-        public async Task<IActionResult> GetByTema(string tema)
-        {
-            try
-            {
-                var eventos = await _eventoService.GetAllEventosByTemaAsync(User.GetUserId(), tema, true);
-                if (eventos == null) return NoContent();
+        // [HttpGet("{tema}/tema")]
+        // public async Task<IActionResult> GetByTema(string tema)
+        // {
+        //     try
+        //     {
+        //         var eventos = await _eventoService.GetAllEventosByTemaAsync(User.GetUserId(), tema, true);
+        //         if (eventos == null) return NoContent();
 
-                return Ok(eventos);
-            }
-            catch (System.Exception ex)
-            {                
-                return StatusCode(StatusCodes.Status500InternalServerError, 
-                $"Erro ao tentar recuperar os eventos: Erro {ex.Message}");
-            }
-        }
+        //         return Ok(eventos);
+        //     }
+        //     catch (System.Exception ex)
+        //     {                
+        //         return StatusCode(StatusCodes.Status500InternalServerError, 
+        //         $"Erro ao tentar recuperar os eventos: Erro {ex.Message}");
+        //     }
+        // }
 
         [HttpPost]
         public async Task<IActionResult> Post(EventoDto evento)

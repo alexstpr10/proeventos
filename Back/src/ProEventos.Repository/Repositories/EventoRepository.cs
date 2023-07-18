@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using ProEventos.Domain.Models;
 using ProEventos.Repository.Context;
 using ProEventos.Repository.Interfaces;
+using ProEventos.Repository.Models;
 
 namespace ProEventos.Repository.Repositories
 {
@@ -18,7 +19,7 @@ namespace ProEventos.Repository.Repositories
             this._context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;       
         }        
 
-        public async Task<Evento[]> GetAllEventosAsync(int userId, bool includePalestrantes= false)
+        public async Task<PageList<Evento>> GetAllEventosAsync(int userId, PageParams pageParams, bool includePalestrantes= false)
         {
             IQueryable<Evento> query = _context.Eventos
                 .Include(e => e.Lotes)
@@ -32,29 +33,11 @@ namespace ProEventos.Repository.Repositories
             }
 
             query = query
-                    .Where(e => e.UserId == userId)
+                    .Where(x => x.Tema.ToLower().Contains(pageParams.Term.ToLower()) && x.UserId == userId)
                     .OrderBy(e => e.Id);
 
-            return await query.ToArrayAsync();
+            return await PageList<Evento>.CreateASync(query, pageParams.PageNumber, pageParams.pageSize);
 
-        }
-
-        public async Task<Evento[]> GetAllEventosByTemaAsync(int userId, string tema, bool includePalestrantes = false)
-        {
-            IQueryable<Evento> query = _context.Eventos
-                .Include(e => e.Lotes)
-                .Include(e => e.RedesSociais);
-
-            if(includePalestrantes)
-            {
-                query = query.Include(e => e.PalestrantesEventos)
-                .ThenInclude(pe => pe.Palestrante);
-            }
-
-            query = query.OrderBy(e => e.Id)
-                         .Where(x => x.Tema.ToLower().Contains(tema.ToLower()) && x.UserId == userId);
-
-            return await query.ToArrayAsync();
         }
 
         public async Task<Evento> GetEventoByIdAsync(int userId, int eventoId, bool includePalestrantes = false)
