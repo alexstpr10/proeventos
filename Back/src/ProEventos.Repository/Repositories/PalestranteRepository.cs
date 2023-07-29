@@ -42,7 +42,7 @@ namespace ProEventos.Repository.Repositories
         }
        
 
-        public async Task<Palestrante> GetPalestranteByIdAsync(int userId, bool includeEventos = false)
+        public async Task<Palestrante> GetPalestranteByUserIdAsync(int userId, bool includeEventos = false)
         {
             IQueryable<Palestrante> query = _context.Palestrantes
             .Include(p => p.User)

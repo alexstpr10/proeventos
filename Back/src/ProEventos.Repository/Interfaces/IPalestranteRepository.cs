@@ -7,9 +7,9 @@ using ProEventos.Repository.Models;
 
 namespace ProEventos.Repository.Interfaces
 {
-    public interface IPalestranteRepository
+    public interface IPalestranteRepository: IGeralRepository
     {       
         Task<PageList<Palestrante>> GetAllPalestrantesAsync(PageParams pageParams, bool includeEventos = false);
-        Task<Palestrante> GetPalestranteByIdAsync(int userId, bool includeEventos);
+        Task<Palestrante> GetPalestranteByUserIdAsync(int userId, bool includeEventos);
     }
 }
