@@ -5,6 +5,8 @@ import { environment } from '@environments/environment';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 import { Evento } from 'src/app/models/Evento';
 import { EventoService } from 'src/app/services/evento.service';
 
@@ -22,6 +24,7 @@ export class EventoListaComponent {
   //private _filtroLista: string = "";
   public eventoId =0;
   public pagination = {} as Pagination;
+  termoBuscaChanged: Subject<string> = new Subject<string>();
 
   // public get filtroLista(): string{
   //   return this._filtroLista;
@@ -34,18 +37,27 @@ export class EventoListaComponent {
   // }
 
   public filtrarEventos(evt: any): any {
-    this.eventoService.getEventos(this.pagination.currentPage, this.pagination.itemsPerPage, evt.value).subscribe(
-      (eventosResp: PaginatedResult<Evento[]>) => {
-        this.eventos = eventosResp.result;
-        this.pagination = eventosResp.pagination;
-      },
-      (error: any) => {
-        console.log(error);
-        this.spinner.hide();
-        this.toastr.error('Erro ao carregar os eventos', 'Error!');
-      }
-    )
+    if (this.termoBuscaChanged.observers.length === 0) {
 
+      this.termoBuscaChanged.pipe(debounceTime(1000)).subscribe(
+        filtrarPor => {
+          this.spinner.show();
+          this.eventoService.getEventos(this.pagination.currentPage, this.pagination.itemsPerPage, filtrarPor).subscribe(
+            (eventosResp: PaginatedResult<Evento[]>) => {
+              this.eventos = eventosResp.result;
+              this.pagination = eventosResp.pagination;
+            },
+            (error: any) => {
+              console.log(error);
+              this.spinner.hide();
+              this.toastr.error('Erro ao carregar os eventos', 'Error!');
+            }
+          ).add(() => { this.spinner.hide();});
+        }
+      )
+    }
+
+    this.termoBuscaChanged.next(evt.value);
 
     // filtrarPor = filtrarPor.toLocaleLowerCase();
     // return this.eventos.filter(

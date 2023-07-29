@@ -33,7 +33,8 @@ namespace ProEventos.Repository.Repositories
             }
 
             query = query
-                    .Where(x => x.Tema.ToLower().Contains(pageParams.Term.ToLower()) && x.UserId == userId)
+                    .Where(x => (x.Tema.ToLower().Contains(pageParams.Term.ToLower()) ||
+                                 x.Local.ToLower().Contains(pageParams.Term.ToLower())) && x.UserId == userId)
                     .OrderBy(e => e.Id);
 
             return await PageList<Evento>.CreateASync(query, pageParams.PageNumber, pageParams.pageSize);
