@@ -33,7 +33,7 @@ namespace ProEventos.Repository.Repositories
             IQueryable<RedeSocial> query = _context.RedesSocials;
 
             query = query.AsNoTracking()
-            .Where(rs => rs.EventoId == palestranteId && rs.Id == id);
+            .Where(rs => rs.PalestranteId == palestranteId && rs.Id == id);
 
             return await query.FirstOrDefaultAsync();
         }

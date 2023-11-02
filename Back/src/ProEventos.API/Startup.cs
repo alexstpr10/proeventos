@@ -80,12 +80,16 @@ namespace ProEventos.API
             services.AddScoped<ILoteRepository, LoteRepository>();
             services.AddScoped<IGeralRepository, GeralRepository>();            
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IPalestranteRepository, PalestranteRepository>();
+            services.AddScoped<IRedeSocialRepository, RedeSocialRepository>();
 
             services.AddScoped<IEventoService, EventoService>();
             services.AddScoped<ILoteService, LoteService>();
             services.AddScoped<IPalestranteService, PalestranteService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IPalestranteService, PalestranteService>();
+            services.AddScoped<IRedeSocialService, RedeSocialService>();
             services.AddCors();
             services.AddSwaggerGen(c =>
             {

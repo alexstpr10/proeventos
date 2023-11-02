@@ -57,7 +57,7 @@ namespace ProEventos.API.Controllers
             }            
         }
 
-         [HttpDelete("{eventoId}/{loteId}")]
+        [HttpDelete("{eventoId}/{loteId}")]
         public async Task<IActionResult> Delete(int eventoId, int loteId)
         {
             try
