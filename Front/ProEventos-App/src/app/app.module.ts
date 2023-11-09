@@ -30,6 +30,7 @@ import { TituloComponent } from './shared/titulo/titulo.component';
 import { ContatosComponent } from './componentes/contatos/contatos.component';
 import { DashboardComponent } from './componentes/dashboard/dashboard.component';
 import { PerfilComponent } from './componentes/user/perfil/perfil.component';
+import { PerfilDetalheComponent } from './componentes/user/perfil/perfil-detalhe/perfil-detalhe.component';
 import { EventoDetalheComponent } from './componentes/eventos/evento-detalhe/evento-detalhe.component';
 import { EventoListaComponent } from './componentes/eventos/evento-lista/evento-lista.component';
 import { UserComponent } from './componentes/user/user.component';
@@ -38,6 +39,7 @@ import { RegistrationComponent } from './componentes/user/registration/registrat
 import { AccountService } from './services/account.service';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { HomeComponent } from './componentes/home/home.component';
+
 
 defineLocale('pt-br', ptBrLocale);
 
@@ -51,6 +53,7 @@ defineLocale('pt-br', ptBrLocale);
     ContatosComponent,
     DashboardComponent,
     PerfilComponent,
+    PerfilDetalheComponent,
     NavComponent,
     DateTimeFormatPipe,
     EventoDetalheComponent,
