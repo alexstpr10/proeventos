@@ -1,64 +1,67 @@
 <app-titulo [titulo]="'Perfil'" [iconClass]="'fa fa-address-card'"></app-titulo>
 <div class="card rounded shadow-sm">
-    <div class="row p-3">
-      <div class="col-lg-3 pt-1">
-        <div class="card mb-3">
-          <div class="card-header"></div>
-          <div class="d-flex align-self-center pt-3">
-            <a>
-              <img
-              src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRbezqZpEuwGSvitKy3wrwnth5kysKdRqBW54cAszm_wiutku3R"
-              name="aboutme" width="120" height="120" class="rounded-circle">
-            </a>
-          </div>
-          <div class="card-body">
-            <div class="h4 text-center mb-3">@{{userUpdate.userName}}</div>
-            <div class="h7 text-bold pb-1"><b>Nome:</b> {{ userUpdate.primeiroNome + ' ' + userUpdate.ultimoNome }}</div>
-            <div class="h7">
-              {{userUpdate.descricao}}
-            </div>
-          </div>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-              <div class="row">
-                <div class="col-6 text-center border-right">
-                  <div class="h5">0</div>
-                  <div class="h6 text-muted">Meus eventos criados</div>
-                </div>
-                <div class="col-6 text-center">
-                  <div class="h5">0</div>
-                  <div class="h6 text-muted">Eventos como participante</div>
-                </div>
-              </div>
-            </li>
-          </ul>
-          <div class="card-footer"></div>
+  <div class="row p-3">
+    <div class="col-lg-3 pt-1">
+      <div class="card mb-3">
+        <div class="card-header">
+          <input type="file" #file (change)="onFileChange($event)" style="display: none;">
         </div>
-      </div>
-      <div class="col-lg-9">
-        <tabset>
-          <tab class="border border-top-0 p-3">
-            <ng-template tabHeading>
-              <i class="fa fa-address-card mr-2"></i>
-              <span>Perfil</span>
-            </ng-template>
-            <app-perfil-detalhe></app-perfil-detalhe>
-          </tab>
-          <tab class="border border-top-0 p-3">
-            <ng-template tabHeading>
-              <i class="fa fa-user mr-2"></i>
-              <span>Palestrante</span>
-            </ng-template>
-            Palestrante
-          </tab>
-          <tab class="border border-top-0 p-3">
-            <ng-template tabHeading>
-              <i class="fa fa-share-square mr-2"></i>
-              <span>Rede Social</span>
-            </ng-template>
-            Rede Social
-          </tab>
-        </tabset>
+        <div class="d-flex align-self-center pt-3">
+          <img
+          [src]="imagemURL"
+          class="rounded-circle"
+          (click)="file.click()"
+          name="aboutme" width="120" height="120"
+          style="cursor: pointer;">
+        </div>
+        <div class="card-body">
+          <div class="h4 text-center mb-3">{{ userUpdate.userName }}</div>
+          <div class="h7 text-bold pb-1"><b>Nome:</b> {{ userUpdate.primeiroNome + ' ' + userUpdate.ultimoNome }}</div>
+          <div class="h7">
+            {{userUpdate.descricao}}
+          </div>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col-6 text-center border-right">
+                <div class="h5">0</div>
+                <div class="h6 text-muted">Meus eventos criados</div>
+              </div>
+              <div class="col-6 text-center">
+                <div class="h5">0</div>
+                <div class="h6 text-muted">Eventos como participante</div>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <div class="card-footer"></div>
       </div>
     </div>
+    <div class="col-lg-9">
+      <tabset>
+        <tab class="border border-top-0 p-3">
+          <ng-template tabHeading>
+            <i class="fa fa-address-card mr-2"></i>
+            <span>Perfil</span>
+          </ng-template>
+          <app-perfil-detalhe (changeFormValue)="setFormValue($event)"></app-perfil-detalhe>
+        </tab>
+        <tab class="border border-top-0 p-3">
+          <ng-template tabHeading>
+            <i class="fa fa-user mr-2"></i>
+            <span>Palestrante</span>
+          </ng-template>
+          Palestrante
+        </tab>
+        <tab class="border border-top-0 p-3">
+          <ng-template tabHeading>
+            <i class="fa fa-share-square mr-2"></i>
+            <span>Rede Social</span>
+          </ng-template>
+          Rede Social
+        </tab>
+      </tabset>
+    </div>
+  </div>
 </div>

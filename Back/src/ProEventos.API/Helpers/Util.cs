@@ -26,6 +26,10 @@ namespace ProEventos.API.Helpers
             imageName = $"{imageName}{DateTime.UtcNow.ToString("yymmssfff")}{Path.GetExtension(imageFile.FileName)}";
 
             var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, @$"Resources\{destino}", imageName);
+            var imageDiretorio = Path.Combine(_hostEnvironment.ContentRootPath, @$"Resources\{destino}");
+
+            if (!Directory.Exists(imageDiretorio))
+                Directory.CreateDirectory(imageDiretorio);
 
             using (var fileStream = new FileStream(imagePath, FileMode.Create))
             {
