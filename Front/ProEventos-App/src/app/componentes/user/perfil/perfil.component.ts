@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserUpdate } from '@app/models/identity/UserUpdate';
 import { AccountService } from '@app/services/account.service';
+import { environment } from '@environments/environment';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 
@@ -11,7 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class PerfilComponent implements OnInit {
   userUpdate = {} as UserUpdate;
-  public imagemURL = '';
+  public imagemURL = 'assets/upload.png';
   public file: File;
 
   constructor(private spinner: NgxSpinnerService,
@@ -23,6 +24,7 @@ export class PerfilComponent implements OnInit {
 
   public setFormValue(usuario: UserUpdate): void {
     this.userUpdate = usuario;
+    this.imagemURL = this.mostraImagem(usuario.imagemURL);
   }
 
   public onFileChange(ev: any): void{
@@ -32,7 +34,6 @@ export class PerfilComponent implements OnInit {
 
     this.file = ev.target.files[0];
     reader.readAsDataURL(this.file);
-
     this.uploadImage();
   }
 
@@ -48,6 +49,12 @@ export class PerfilComponent implements OnInit {
         console.error(error);
       }
     ).add(() => this.spinner.hide());
+  }
+
+  public mostraImagem(imagemURL: string): string{
+    return (imagemURL != null && imagemURL != '')
+      ? `${environment.apiURL}/resources/perfil/${imagemURL}`
+      : '/assets/no_photo.png';
   }
 
 }

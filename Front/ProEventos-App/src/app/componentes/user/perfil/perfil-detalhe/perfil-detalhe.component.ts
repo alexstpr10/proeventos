@@ -94,6 +94,7 @@ export class PerfilDetalheComponent implements OnInit {
       descricao: ['', Validators.required],
       password: ['', [Validators.minLength(4), Validators.nullValidator]],
       confirmarPassword: ['', Validators.nullValidator],
+      imagemURL: [''],
     }, formOptions);
   }
 
