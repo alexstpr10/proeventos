@@ -11,7 +11,7 @@ import { map, take } from 'rxjs/operators';
 })
 export class PalestranteService {
 
-  baseURL = `${Constants.BASE_URL}/palestrantes`;
+  baseURL = `${Constants.BASE_URL}/Palestrantes`;
   //https://localhost:44304/
   //https://localhost:5001
 

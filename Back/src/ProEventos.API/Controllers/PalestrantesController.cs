@@ -14,7 +14,7 @@ using ProEventos.Repository.Models;
 namespace ProEventos.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [Authorize]
     public class PalestrantesController : ControllerBase
     {

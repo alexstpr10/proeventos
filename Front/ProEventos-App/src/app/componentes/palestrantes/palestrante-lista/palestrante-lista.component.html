@@ -1,0 +1,17 @@
+<div class="card rounded shadow-sm p-3">
+  <div class="d-flex">
+    <div class="flex-fill pr-2">
+      <div class="input-group mb-2">
+        <div class="input-group-prepend">
+          <div class="input-group-text">Filtro:</div>
+        </div>
+        <input type="text" class="form-control" placeholder="Filtrar por Tema e Local" (input)="filtrarpalestrantes($event.target)">
+      </div>
+    </div>
+  </div>
+  <div *ngIf="palestrantes && palestrantes.length">
+    <div class="col-md-4 mb-4 d-flex align-items-stretch" *ngFor="let palestrate of palestrantes">
+        {{palestrate.user.userName}}
+    </div>
+  </div>
+</div>

@@ -19,22 +19,10 @@ export class EventoListaComponent {
   modalRef!: BsModalRef;
 
   public eventos: Evento[] = [];
-  //public eventosFiltrados: Evento[] = [];
   public exibirImg: boolean = true;
-  //private _filtroLista: string = "";
   public eventoId =0;
   public pagination = {} as Pagination;
   termoBuscaChanged: Subject<string> = new Subject<string>();
-
-  // public get filtroLista(): string{
-  //   return this._filtroLista;
-  // }
-
-  // public set filtroLista(value: string)
-  // {
-  //   this._filtroLista =value;
-  //   this.eventosFiltrados = this.filtroLista ? this.filtrarEventos(this.filtroLista) : this.eventos;
-  // }
 
   public filtrarEventos(evt: any): any {
     if (this.termoBuscaChanged.observers.length === 0) {
@@ -59,11 +47,6 @@ export class EventoListaComponent {
 
     this.termoBuscaChanged.next(evt.value);
 
-    // filtrarPor = filtrarPor.toLocaleLowerCase();
-    // return this.eventos.filter(
-    //   (evento: { tema: string; local: string; }) => evento.tema.toLocaleLowerCase().indexOf(filtrarPor) !== -1
-    //   || evento.local.toLocaleLowerCase().indexOf(filtrarPor) !== -1
-    // )
   }
 
   constructor(
