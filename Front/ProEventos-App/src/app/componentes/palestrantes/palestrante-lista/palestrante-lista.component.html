@@ -1,17 +1,45 @@
 <div class="card rounded shadow-sm p-3">
   <div class="d-flex">
-    <div class="flex-fill pr-2">
+    <div class="flex-fill pr-3">
       <div class="input-group mb-2">
         <div class="input-group-prepend">
           <div class="input-group-text">Filtro:</div>
         </div>
-        <input type="text" class="form-control" placeholder="Filtrar por Tema e Local" (input)="filtrarpalestrantes($event.target)">
+        <input type="text" class="form-control" placeholder="Filtrar por nome e minicurrículo" (input)="filtrarpalestrantes($event.target)">
       </div>
     </div>
   </div>
-  <div *ngIf="palestrantes && palestrantes.length">
+  <div *ngIf="palestrantes && palestrantes.length" class="row mt-2">
     <div class="col-md-4 mb-4 d-flex align-items-stretch" *ngFor="let palestrate of palestrantes">
-        {{palestrate.user.userName}}
+      <div class="card">
+        <div class="d-flex align-self-center pt-3">
+          <img
+          [src]="mostraImagem(palestrate.user.imagemURL)"
+          class="rounded-circle"
+          width="120" height="120">
+        </div>
+        <div class="card-body">
+          <div class="h4 text-center mb-3">{{ palestrate.user.userName }}</div>
+          <div class="h7 text-bold pb-1"><b>Nome:</b> {{ palestrate.user.primeiroNome + ' ' + palestrate.user.ultimoNome }}</div>
+          <div class="h7">
+            {{palestrate.miniCurriculo}}
+          </div>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col-6 text-center border-right">
+                <div class="h5">0</div>
+                <div class="h6 text-muted">Meus eventos criados</div>
+              </div>
+              <div class="col-6 text-center">
+                <div class="h5">0</div>
+                <div class="h6 text-muted">Eventos como palestrante</div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </div>

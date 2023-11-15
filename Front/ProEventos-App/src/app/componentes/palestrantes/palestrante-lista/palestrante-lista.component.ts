@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { PaginatedResult, Pagination } from '@app/models/Pagination';
 import { Palestrante } from '@app/models/Palestrante';
 import { PalestranteService } from '@app/services/palestrante.service';
+import { environment } from '@environments/environment';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
@@ -21,7 +22,6 @@ export class PalestranteListaComponent implements OnInit {
   public palestranteId =0;
   public pagination = {} as Pagination;
   termoBuscaChanged: Subject<string> = new Subject<string>();
-
 
   constructor(
     private palestranteService: PalestranteService,
@@ -56,6 +56,12 @@ export class PalestranteListaComponent implements OnInit {
         this.toastr.error('Erro ao carregar os palestrantes', 'Error!');
       }
     ).add(() => { this.spinner.hide();});
+  }
+
+  public mostraImagem(imagemURL: string): string{
+    return (imagemURL != null && imagemURL != '')
+      ? `${environment.apiURL}/resources/perfil/${imagemURL}`
+      : '/assets/no_photo.png';
   }
 
   public filtrarpalestrantes(evt: any): any {
