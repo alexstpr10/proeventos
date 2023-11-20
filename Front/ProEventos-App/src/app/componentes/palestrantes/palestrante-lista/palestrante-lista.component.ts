@@ -41,6 +41,11 @@ export class PalestranteListaComponent implements OnInit {
     this.carregarPalestrantes();
   }
 
+  public pageChanged(event: any): void{
+    this.pagination.currentPage = event.page;
+    this.carregarPalestrantes();
+  }
+
   public carregarPalestrantes(): void{
 
     this.spinner.show();

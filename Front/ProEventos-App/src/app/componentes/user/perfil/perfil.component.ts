@@ -57,4 +57,8 @@ export class PerfilComponent implements OnInit {
       : '/assets/no_photo.png';
   }
 
+  public get EhPalestrate(): boolean{
+    return this.userUpdate.funcao === 'Palestrante';
+  }
+
 }
