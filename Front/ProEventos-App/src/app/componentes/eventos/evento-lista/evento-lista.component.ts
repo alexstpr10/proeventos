@@ -126,7 +126,7 @@ export class EventoListaComponent {
   }
 
   public detalheEvento(id: number) : void{
-    this.router.navigate([`eventos/detalhe/${id}`]);
+    this.router.navigate([`eventos/detalhe/${id}/2023-11-21`]);
   }
 
   public mostraImagem(imagemURL: string): string{

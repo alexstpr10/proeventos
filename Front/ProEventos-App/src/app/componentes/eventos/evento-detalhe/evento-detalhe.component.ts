@@ -53,12 +53,14 @@ export class EventoDetalheComponent implements OnInit {
 
   public carregarEvento(): void{
     const eventoIdParam = this.activatedRoute.snapshot.paramMap.get('id');
+    const dataParam = this.activatedRoute.snapshot.paramMap.get('data');
 
     if(eventoIdParam != null){
       this.spinner.show();
       this.eventoService.getEventoById(+eventoIdParam).subscribe(
         (evento: Evento) => {
           this.evento = {...evento};
+          this.evento.tema = this.evento.tema + ' ' + dataParam;
           this.form.patchValue(this.evento);
 
           if(this.evento.imagemURL != null && this.evento.imagemURL != '') {
