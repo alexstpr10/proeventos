@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { RedeSocial } from '@app/models/RedeSocial';
 import { RedeSocialService } from '@app/services/redeSocial.service';
@@ -13,7 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class RedesSociaisComponent implements OnInit {
   modalRef: BsModalRef;
-  public eventoId = 0;
+  @Input() eventoId = 0;
   public formRS: FormGroup;
   public redeSocialAtual = { id: 0, nome: '', indice: 0 };
 
@@ -30,14 +30,18 @@ export class RedesSociaisComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    if(this.eventoId === 0)
-      this.carregarRedesSociais('palestrante')
-    else
-    this.carregarRedesSociais('evento', this.eventoId);
+    this.carregarRedesSociais(this.eventoId)
+    this.validation();
   }
 
-  private carregarRedesSociais(origem: string, id: number = 0): void {
+  private carregarRedesSociais(id: number = 0): void {
+
+    let origem = 'palestrante';
+
+    if (this.eventoId !== 0) origem = 'evento';
     this.spinner.show();
+
+    console.log('Carregar Redes Sociais ' + origem);
 
     this.redeSocialService.getRedesSociais(origem, id)
       .subscribe(
@@ -90,36 +94,41 @@ export class RedesSociaisComponent implements OnInit {
   }
 
   public salvarRedesSociais(): void{
-    // this.spinner.show();
-    // if(this.formRS.controls.lotes.valid){
-    //   this.loteService.saveLote(this.evento.id, this.form.value.lotes).subscribe(
-    //     () => {
-    //       this.toastr.success('Lotes salvos com sucesso!', 'Sucesso!');
-    //       //this.lotes.reset();
-    //     },
-    //     (error: any) => {
-    //       this.toastr.error('Erro ao tentar salvar lotes.', 'Erro');
-    //       console.error(error);
-    //     }
-    //   ).add(() => this.spinner.hide());
-    // }
+    let origem = 'palestrante';
+
+    if(this.eventoId != 0) origem = 'evento';
+
+    this.spinner.show();
+    if(this.formRS.controls.redesSociais.valid){
+      this.redeSocialService.saveRedesSociais(origem, this.eventoId, this.formRS.value.redesSociais).subscribe(
+        () => {
+          this.toastr.success('Redes Sociais foram salvas com sucesso!', 'Sucesso!');
+        },
+        (error: any) => {
+          this.toastr.error('Erro ao tentar salvar redes sociais.', 'Erro');
+          console.error(error);
+        }
+      ).add(() => this.spinner.hide());
+    }
   }
 
   public confirmDeleteRedeSocial(): void{
-    // this.modalRef.hide();
-    // this.spinner.show();
+    let origem = 'palestrante';
+    this.modalRef.hide();
+    this.spinner.show();
 
-    // this.redeSocialService.deleteRedeSocial(this.eventoId, this.redeSocialAtual.id).subscribe(
-    //   () => {
-    //     this.toastr.success('Rede Social deletado com sucesso','Sucesso');
-    //     this.redesSociais.removeAt(this.redeSocialAtual.indice);
-    //   },
-    //   (error: any) => {
-    //     this.toastr.error(`Erro ao tentar deletar a Rede Social ${this.redeSocialAtual.nome}`, 'Error');
-    //     console.error(error);
-    //   }
-    // ).add(() => this.spinner.hide());
+    if(this.eventoId != 0) origem = 'evento';
 
+    this.redeSocialService.deleteRedeSocial(origem, this.eventoId, this.redeSocialAtual.id).subscribe(
+      () => {
+        this.toastr.success('Rede Social deletado com sucesso','Sucesso');
+        this.redesSociais.removeAt(this.redeSocialAtual.indice);
+      },
+      (error: any) => {
+        this.toastr.error(`Erro ao tentar deletar a Rede Social ${this.redeSocialAtual.nome}`, 'Error');
+        console.error(error);
+      }
+    ).add(() => this.spinner.hide());
   }
 
   public declineDeleteRedeSocial(): void{

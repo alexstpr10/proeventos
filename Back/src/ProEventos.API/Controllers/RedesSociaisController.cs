@@ -53,7 +53,7 @@ namespace ProEventos.API.Controllers
             try
             {
                 var palestrante = await _palestranteService.GetPalestranteByUserIdAsync(User.GetUserId());
-                if(palestrante == null) return NoContent();
+                if(palestrante == null) return Unauthorized();
                 
                 var redeSocial = await _redeSocialService.GetAllByPalestranteIdAsync(palestrante.Id);
                 if (redeSocial == null) return NoContent();
